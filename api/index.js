@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -14,7 +17,7 @@ import {
   save,
   setStore,
 } from "./service";
-const { PROD_BACKEND_PORT, USE_VERCEL_KV } = process.env;
+const { BACKEND_PORT } = process.env;
 
 const app = express();
 
@@ -107,9 +110,7 @@ app.get("/", (req, res) => res.redirect("/docs"));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const port = USE_VERCEL_KV
-  ? PROD_BACKEND_PORT
-  : JSON.parse(fs.readFileSync("../presto-frontend/backend.config.json")).BACKEND_PORT;
+const port = BACKEND_PORT;
 
 app.listen(port, () => {
   console.log(`For API docs, navigate to http://localhost:${port}`);
