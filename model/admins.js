@@ -6,7 +6,8 @@ const { Schema, model } = mongoose;
 const adminsSchema = new Schema({
   admins: {
     type: Map,
-    of: User.schema
+    of: User.schema,
+    default: () => new Map()
   }
 });
 
