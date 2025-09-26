@@ -17,7 +17,6 @@ const { USE_MONGODB } = process.env;
 ***************************************************************/
 
 let admins;
-console.log("Use mongodb: ", USE_MONGODB);
 
 const sessionTimeouts = {};
 
@@ -154,7 +153,23 @@ export const register = (email, password, name) =>
 export const getStore = (email) =>
   userLock((resolve, reject) => {
     const emailKey = emailUtils.encodeEmailKey(email);
-    resolve(admins.admins.get(emailKey).store);
+    
+    // Get data using working Mongoose methods
+    const user = admins.admins.get(emailKey);
+    if (!user) {
+      reject(new Error(`User not found for email: ${email}`));
+    }
+
+    // Convert the store (which contains Maps) to plain object
+    const store = user.store;
+    const plainStore = JSON.parse(JSON.stringify(store, (key, value) => {
+      if (value instanceof Map) {
+        return Object.fromEntries(value);
+      }
+      return value;
+    }));
+
+    resolve(plainStore);
   });
 
 export const setStore = (email, store) =>
