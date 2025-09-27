@@ -1,4 +1,3 @@
-require("dotenv").config();
 import AsyncLock from "async-lock";
 import fs from "fs";
 import jwt from "jsonwebtoken";
