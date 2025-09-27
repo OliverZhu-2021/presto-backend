@@ -24,22 +24,8 @@ const update = async (admins) =>
   new Promise((resolve, reject) => {
     lock.acquire("saveData", async () => {
       try {
-        if (USE_MONGODB) {
-          // Store to MongoDB
-          await admins.save();
-        } else {
-          // Store to local file system
-          fs.writeFileSync(
-            DATABASE_FILE,
-            JSON.stringify(
-              {
-                admins,
-              },
-              null,
-              2
-            )
-          );
-        }
+        // Store to MongoDB
+        await admins.save();
         resolve();
       } catch(error) {
         console.log(error);
@@ -56,18 +42,12 @@ export const reset = () => {
 
 (async () => {
   try {
-    if (USE_MONGODB) {
-      // Load existing data into the admins instance
-      admins = await Admins.findOne({});
-      
-      if(!admins) {
-        admins = new Admins({});
-        await admins.save();
-      }
-    } else {
-      // Read from local file
-      const data = JSON.parse(fs.readFileSync(DATABASE_FILE));
-      admins = data.admins;
+    // Load existing data into the admins instance
+    admins = await Admins.findOne({});
+    
+    if(!admins) {
+      admins = new Admins({});
+      await admins.save();
     }
   } catch(error) {
     console.log("WARNING: No database found, create a new one");
