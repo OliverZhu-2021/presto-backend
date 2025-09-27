@@ -10,8 +10,6 @@ import { error } from "console";
 const lock = new AsyncLock();
 
 const JWT_SECRET = "llamallamaduck";
-const DATABASE_FILE = "./database.json";
-const { USE_MONGODB } = process.env;
 /***************************************************************
                        State Management
 ***************************************************************/
