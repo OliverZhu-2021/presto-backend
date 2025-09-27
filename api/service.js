@@ -1,10 +1,8 @@
 import AsyncLock from "async-lock";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import { AccessError, InputError } from "./error";
 import Admins from "../model/admins";
 import emailUtils from "./utils";
-import { error } from "console";
 
 const lock = new AsyncLock();
 
