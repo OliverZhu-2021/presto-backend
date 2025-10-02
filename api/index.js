@@ -18,7 +18,7 @@ import {
 } from "./service";
 import mongoose from "mongoose";
 
-const { BACKEND_PORT } = process.env;
+const { BACKEND_PORT, DB_CONNECTION_STRING } = process.env;
 
 const app = express();
 
@@ -42,7 +42,7 @@ const catchErrors = (fn) => async (req, res) => {
   }
 };
 
-mongoose.connect("mongodb+srv://zhuh5777_db_user:XAKgFxL46MX8snZc@test-cluster.lqa6i0g.mongodb.net/?retryWrites=true&w=majority&appName=test-cluster");
+mongoose.connect(DB_CONNECTION_STRING);
 
 /***************************************************************
                        Auth Function
