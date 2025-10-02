@@ -113,7 +113,7 @@ app.get("/", (req, res) => res.redirect("/docs"));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const port = BACKEND_PORT;
+const port = process.env.PORT || BACKEND_PORT;
 
 app.listen(port, () => {
   console.log(`For API docs, navigate to http://localhost:${port}`);
