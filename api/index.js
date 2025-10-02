@@ -23,7 +23,33 @@ const { BACKEND_PORT, DB_CONNECTION_STRING } = process.env;
 
 const app = express();
 
-app.use(cors());
+// UPDATED CORS CONFIGURATION
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://presto-update.vercel.app'
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman, curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // For now, allow all - you can restrict later
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Handle preflight requests explicitly
+app.options('*', cors());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
